@@ -3,14 +3,14 @@
 namespace App\Policies;
 use App\Models\User;
 
-class CustomerPolicy
+class ProjectPolicy
 {
    /**
    *Determine whether the user can view any models.
    */
    public function viewAny(User $user): bool
    {
-      return $user->permissions['customers_view'];
+      return $user->permissions['projects_view'];
    }
 
    /**
@@ -18,7 +18,7 @@ class CustomerPolicy
    */
    public function view(User $user): bool
    {
-      return $user->permissions['customers_view'];
+      return $user->permissions['projects_view'];
    }
 
    /**
@@ -26,7 +26,7 @@ class CustomerPolicy
    */
    public function create(User $user): bool
    {
-      return $user->permissions['customers_admin'];
+      return $user->permissions['projects_admin'];
    }
 
    /**
@@ -34,7 +34,7 @@ class CustomerPolicy
    */
    public function update(User $user): bool
    {
-      return $user->permissions['customers_edit'];
+      return $user->permissions['projects_edit'];
    }
 
    /**
@@ -42,7 +42,7 @@ class CustomerPolicy
    */
    public function delete(User $user): bool
    {
-      return $user->permissions['customers_admin'];
+      return $user->permissions['projects_admin'];
    }
 
    /**
@@ -50,7 +50,7 @@ class CustomerPolicy
    */
    public function restore(User $user): bool
    {
-      return $user->permissions['customers_admin'];
+      return $user->permissions['projects_admin'];
    }
 
    /**
@@ -58,6 +58,6 @@ class CustomerPolicy
    */
    public function forceDelete(User $user): bool
    {
-      return $user->permissions['customers_admin'];
+      return $user->permissions['projects_admin'];
    }
 }

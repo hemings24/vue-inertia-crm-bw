@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\County;
-use App\Models\Project;
 use App\Models\StatusItem;
+use App\Models\Project;
 
 class Customer extends Model
 {
@@ -30,18 +30,6 @@ class Customer extends Model
       'customer_status'
    ];
 
-   public static function title_prefixes()
-   {
-      return[
-         ['id' => "Mr.",   'title' => "Mr."],
-         ['id' => "Mrs.",  'title' => "Mrs."],
-         ['id' => "Ms.",   'title' => "Ms."],
-         ['id' => "Miss",  'title' => "Miss"],
-         ['id' => "Dr.",   'title' => "Dr."],
-         ['id' => "Prof.", 'title' => "Prof."]
-      ];
-   }
-
    public function county(): BelongsTo
    {
       return $this->belongsTo(County::class,'county');
@@ -57,35 +45,61 @@ class Customer extends Model
       return $this->hasMany(Project::class,'customer');
    }
 
+   public static function title_prefixes()
+   {
+      return[
+         ['id' => "Mr.",   'title' => "Mr."],
+         ['id' => "Mrs.",  'title' => "Mrs."],
+         ['id' => "Ms.",   'title' => "Ms."],
+         ['id' => "Miss",  'title' => "Miss"],
+         ['id' => "Dr.",   'title' => "Dr."],
+         ['id' => "Prof.", 'title' => "Prof."]
+      ];
+   }
+
+   public static function paginate_options()
+   {
+      return[
+         ['id' => 10,  'title' => "10"],
+         ['id' => 25,  'title' => "25"],
+         ['id' => 50,  'title' => "50"],
+         ['id' => 100, 'title' => "100"]
+      ];
+   }
+   
    public function scopeFilter($query, array $filters)
    {
+      if($filters['search_customer_status'] ?? false){
+         $query->where('customers.customer_status',request('search_customer_status'));
+      }
+
       if($filters['search_global'] ?? false){
          $query->join('counties','counties.id','=','customers.county')
          ->where(function($subquery){
             $subquery->where('counties.title','like','%'.request('search_global').'%')
             ->orWhere(function($q){
-               $q->orWhere('company','like','%'.request('search_global').'%')
-                 ->orWhere('title_prefix','like','%'.request('search_global').'%')
-                 ->orWhere('first_name','like','%'.request('search_global').'%')
-                 ->orWhere('last_name','like','%'.request('search_global').'%')
-                 ->orWhere('address1','like','%'.request('search_global').'%')
-                 ->orWhere('address2','like','%'.request('search_global').'%')
-                 ->orWhere('address3','like','%'.request('search_global').'%')
-                 ->orWhere('city','like','%'.request('search_global').'%')
-                 ->orWhere('postcode','like','%'.request('search_global').'%');
+               $q->orWhere('customers.company','like','%'.request('search_global').'%')
+                 ->orWhere('customers.title_prefix','like','%'.request('search_global').'%')
+                 ->orWhere('customers.first_name','like','%'.request('search_global').'%')
+                 ->orWhere('customers.last_name','like','%'.request('search_global').'%')
+                 ->orWhere('customers.address1','like','%'.request('search_global').'%')
+                 ->orWhere('customers.address2','like','%'.request('search_global').'%')
+                 ->orWhere('customers.address3','like','%'.request('search_global').'%')
+                 ->orWhere('customers.city','like','%'.request('search_global').'%')
+                 ->orWhere('customers.postcode','like','%'.request('search_global').'%');
             });
          });
       }
 
       if($filters['search_company'] ?? false){
-         $query->where('company','like','%'.request('search_company').'%');
+         $query->where('customers.company','like','%'.request('search_company').'%');
       }
 
       if($filters['search_name'] ?? false){
          $query->where(function($q){
-            $q->where('title_prefix','like','%'.request('search_name').'%')
-            ->orWhere('first_name','like','%'.request('search_name').'%')
-            ->orWhere('last_name','like','%'.request('search_name').'%');
+            $q->where('customers.title_prefix','like','%'.request('search_name').'%')
+            ->orWhere('customers.first_name','like','%'.request('search_name').'%')
+            ->orWhere('customers.last_name','like','%'.request('search_name').'%');
          });
       }
 
@@ -94,21 +108,21 @@ class Customer extends Model
          ->where(function($subquery){
             $subquery->where('counties.title','like','%'.request('search_address').'%')
             ->orWhere(function($q){
-               $q->orWhere('address1','like','%'.request('search_address').'%')
-                 ->orWhere('address2','like','%'.request('search_address').'%')
-                 ->orWhere('address3','like','%'.request('search_address').'%')
-                 ->orWhere('city','like','%'.request('search_address').'%')
-                 ->orWhere('postcode','like','%'.request('search_address').'%');
+               $q->orWhere('customers.address1','like','%'.request('search_address').'%')
+                 ->orWhere('customers.address2','like','%'.request('search_address').'%')
+                 ->orWhere('customers.address3','like','%'.request('search_address').'%')
+                 ->orWhere('customers.city','like','%'.request('search_address').'%')
+                 ->orWhere('customers.postcode','like','%'.request('search_address').'%');
             });
          });
       }
 
       if($filters['search_notes'] ?? false){
-         $query->where('notes','like','%'.request('search_notes').'%');
+         $query->where('customers.notes','like','%'.request('search_notes').'%');
       }
 
-      if($filters['search_status'] ?? false){
-         $query->where('status_items.title','like','%'.request('search_status').'%')
+      if($filters['search_status_items'] ?? false){
+         $query->where('status_items.title','like','%'.request('search_status_items').'%')
                 ->join('status_items','status_items.id','=','customers.customer_status');
       }
    }

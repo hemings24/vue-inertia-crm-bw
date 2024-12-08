@@ -18,23 +18,54 @@ class CustomerController extends Controller
    public function index(Request $request): Response 
    {
       Gate::authorize('viewAny',Customer::class);
-      sleep(0); //refresh time delay
+      //sleep(0); //refresh time delay
 
-      //$customers = Customer::with(['county','status_item'])->get();
+      $customer_statuses = StatusItem::where('status_items.type','customer')
+      ->select('id','title','type','priority')->get();
+      
+      $customer_statuses = $customer_statuses->prepend((object)[
+         'id'=>0, 'title'=>'All', 'type'=>'customer', 'priority'=>0
+      ]);
+
+      $perpage = $request->paginate ?: 10;
+
       $customers = Customer::with(['county','status_item'])
-         ->filter(request(['search_global','search_company','search_name','search_address','search_notes','search_status']))
+         ->filter(request(['search_customer_status','search_global','search_company','search_name','search_address','search_notes','search_status_items']))
+         ->select('customers.*')
          ->latest('customers.created_at')
-         ->paginate(10)
+         ->paginate($perpage)
          ->withQueryString();
       
+      foreach($customers as $customer){
+         $customer->notes = substr($customer->notes,0,70).'.....';
+      }
+
       return Inertia::render('Customers/Index',[
-         'customers'     => $customers,
-         'searchGlobal'  => $request->search_global,
-         'searchCompany' => $request->search_company,
-         'searchName'    => $request->search_name,
-         'searchAddress' => $request->search_address,
-         'searchNotes'   => $request->search_notes,
-         'searchStatus'  => $request->search_status
+         'customers'            => $customers,
+         'searchCustomerStatus' => $request->search_customer_status,
+         'customer_statuses'    => $customer_statuses,
+         'paginate'             => $perpage,
+         'paginate_options'     => Customer::paginate_options(),
+         'searchGlobal'         => $request->search_global,
+         'searchCompany'        => $request->search_company,
+         'searchName'           => $request->search_name,
+         'searchAddress'        => $request->search_address,
+         'searchNotes'          => $request->search_notes,
+         'searchStatusItems'    => $request->search_status_items,
+         'title_prefixes'       => Customer::title_prefixes(),
+         'counties'             => County::get(['id','title'])
+      ]);
+   }
+
+
+   public function show(Customer $customer)
+   {
+      Gate::authorize('view',Customer::class);
+
+      return Inertia::render('Customers/Show',[
+         'customer'     => $customer,
+         'counties'     => County::get(['id','title']),
+         'status_items' => StatusItem::where('status_items.type','customer')->get(['id','title'])
       ]);
    }
 
@@ -44,18 +75,16 @@ class CustomerController extends Controller
       Gate::authorize('create',Customer::class);
       
       return Inertia::render('Customers/Create',[
+         'title_prefixes' => Customer::title_prefixes(),
          'counties'       => County::get(['id','title']),
-         'status_items'   => StatusItem::get(['id','title']),
-         'title_prefixes' => Customer::title_prefixes()
+         'status_items'   => StatusItem::where('status_items.type','customer')->get(['id','title']),
+         'action'         => "add"
       ]);
    }
    
-
    public function store(StoreCustomerRequest $request): RedirectResponse
    {
       Gate::authorize('create',Customer::class);
-
-      sleep(3);  //form request time delay
 
       Customer::create($request->validated());
 
@@ -66,20 +95,20 @@ class CustomerController extends Controller
 
    public function edit(Customer $customer)
    {
-      Gate::authorize('create',Customer::class);
+      Gate::authorize('update',Customer::class);
 
       return Inertia::render('Customers/Edit',[
          'customer'       => $customer,
+         'title_prefixes' => Customer::title_prefixes(),
          'counties'       => County::get(['id','title']),
-         'status_items'   => StatusItem::get(['id','title']),
-         'title_prefixes' => Customer::title_prefixes()
+         'status_items'   => StatusItem::where('status_items.type','customer')->get(['id','title']),
+         'action'         => "update"
       ]);
    }
 
-
    public function update(StoreCustomerRequest $request, Customer $customer)
    {
-      Gate::authorize('create',Customer::class);
+      Gate::authorize('update',Customer::class);
 
       $customer->update($request->validated());
 
@@ -90,7 +119,7 @@ class CustomerController extends Controller
    
    public function destroy(Customer $customer)
    {
-      Gate::authorize('create',Customer::class);
+      Gate::authorize('delete',Customer::class);
 
       $customer->delete();
 

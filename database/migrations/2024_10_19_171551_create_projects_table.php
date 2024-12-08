@@ -13,7 +13,7 @@ return new class extends Migration
    {
       Schema::create('projects',function(Blueprint $table){
          $table->id();
-         $table->string('title');
+         $table->string('name');
          $table->date('date')->nullable();
          $table->decimal('price',total:11,places:2)->default(0.00);
          $table->string('project_reference',length:50)->default('0');

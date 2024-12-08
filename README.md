@@ -18,6 +18,8 @@ http://localhost:8000
 
 User Logins
 -----------
-admin@admin.com  |  password
+admin@email.com  |  password
 <br>
-editor@edit.com  |  password
+editor@email.com  |  password
+<br>
+user@email.com  |  password

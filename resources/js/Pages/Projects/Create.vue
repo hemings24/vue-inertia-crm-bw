@@ -1,16 +1,13 @@
 <script setup>
 import {Head} from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import AddUpdateCustomerForm from './Partials/AddUpdateCustomerForm.vue'
+import AddUpdateProjectForm from './Partials/AddUpdateProjectForm.vue'
 
 defineProps({
-   title_prefixes:{
-      type: Array
-   },
-   counties:{
-      type: Array
-   },
    status_items:{
+      type: Array
+   },
+   customers:{
       type: Array
    },
    action:{
@@ -20,13 +17,12 @@ defineProps({
 </script>
  
 <template>
-   <Head title="New Customer"/>
+   <Head title="New Project"/>
 
    <AuthenticatedLayout>
-      <AddUpdateCustomerForm
-         :title_prefixes="title_prefixes"
-         :counties="counties"
+      <AddUpdateProjectForm
          :status_items="status_items"
+         :customers="customers"
          :action="action"
       />
    </AuthenticatedLayout>

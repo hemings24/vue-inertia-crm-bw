@@ -3,6 +3,7 @@
 namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\County;
+use App\Models\StatusItem;
 
 class CustomerFactory extends Factory
 {
@@ -14,6 +15,7 @@ class CustomerFactory extends Factory
    public function definition(): array
    {
       $counties = County::pluck('id');
+      $status_items = StatusItem::where('status_items.type','customer')->get('id');
 
       return[
          'company'         => $this->faker->company(),
@@ -29,7 +31,7 @@ class CustomerFactory extends Factory
          'email'           => $this->faker->unique()->safeEmail(),
          'phone'           => $this->faker->phoneNumber(),
          'notes'           => $this->faker->text(200),
-         'customer_status' => 1
+         'customer_status' => $status_items->random()
       ];
    }
 }

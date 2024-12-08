@@ -10,15 +10,21 @@ class UserSeeder extends Seeder
    {
       User::factory()->create([
          'name'         => 'Admin',
-         'email'        => 'admin@admin.com',
+         'email'        => 'admin@email.com',
          'password'     => bcrypt('password'),
          'account_type' => 'admin'
       ]);
       User::factory()->create([
          'name'         => 'Editor',
-         'email'        => 'editor@edit.com',
+         'email'        => 'editor@email.com',
          'password'     => bcrypt('password'),
          'account_type' => 'editor'
+      ]);
+      User::factory()->create([
+         'name'         => 'User',
+         'email'        => 'user@email.com',
+         'password'     => bcrypt('password'),
+         'account_type' => 'user'
       ]);
    }
 }
