@@ -3,6 +3,7 @@ import {watch} from 'vue'
 import {Head,Link,router,useForm} from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import NavLink from '@/Components/NavLink.vue'
+import SecondaryButton from '@/Components/SecondaryButton.vue'
 import InputField from '@/Components/InputField.vue'
 import SelectInput from '@/Components/SelectInput.vue'
 import Pagination from '@/Components/Pagination.vue'
@@ -10,6 +11,10 @@ import Pagination from '@/Components/Pagination.vue'
 const props = defineProps({ 
    projects:{
       type: [Object,Array]
+   },
+   searchProjectStatus: Number,
+   project_statuses:{
+      type: Array
    },
    permissions:{
       type: Object
@@ -21,37 +26,43 @@ const props = defineProps({
    searchGlobal: String,
    searchName: String,
    searchDate: String,
-   searchStatus: String,
-   searchCustomer: String
+   searchStatusItems: String,
+   searchCustomer: String,
+   customers:{
+      type: Array
+   }
 });
 
 const form = useForm({
+   search_project_status: props.searchProjectStatus,
    paginate: props.paginate,
    search_global: props.searchGlobal,
    search_name: props.searchName,
    search_date: props.searchDate,
-   search_status: props.searchStatus,
+   search_status_items: props.searchStatusItems,
    search_customer: props.searchCustomer
 });
 
-const search=() =>{
+const search=(project_status_id) =>{
    router.get(route('projects.index'),{
+      search_project_status: project_status_id,
       paginate: form.paginate,
       search_global: form.search_global,
       search_name: form.search_name,
       search_date: form.search_date,
-      search_status: form.search_status,
+      search_status_items: form.search_status_items,
       search_customer: form.search_customer
    });
 };
 
 watch(()=>form.paginate,(newValue)=>{
    router.get(route('projects.index'),{
+      search_project_status: form.search_project_status,
       paginate: form.paginate,
       search_global: form.search_global,
       search_name: form.search_name,
       search_date: form.search_date,
-      search_status: form.search_status,
+      search_status_items: form.search_status_items,
       search_customer: form.search_customer
    });
 });
@@ -68,6 +79,24 @@ const destroy=(id) =>{
 
    <AuthenticatedLayout>
 
+      <div class="flex flex-col space-y-4 mb-10">
+         <h1 class="text-3xl text-gray-700">Projects</h1>
+         <div>
+            <span v-for="project_status in project_statuses" :key="project_status.id">
+               <SecondaryButton v-if="permissions.projects_view" type="button"
+                  id="search_project_status"
+                  @click="search(project_status.id)"
+                  :disabled="form.processing"
+                  :class="((project_status.id==form.search_project_status) || (project_status.id==0 && form.search_project_status==null)) && 'active-statusitem'"
+                  class="hover:!bg-gray-200 hover:text-gray-700 focus:!bg-blue-500 focus:text-white focus:!ring-0 focus:ring-blue-500 focus:ring-offset-0 rounded-none border-none"
+               >
+                  {{project_status.title}}
+               </SecondaryButton>
+            </span>
+            <hr>
+         </div>
+      </div>
+
       <div class="mb-4">
          <Link v-if="permissions.projects_admin" :href="route('projects.create')" class="inline-block rounded-md bg-blue-500 px-4 py-3 text-xs font-semibold uppercase tracking-widest text-white shadow-sm">
             Add New Project
@@ -75,8 +104,8 @@ const destroy=(id) =>{
       </div>
 
       <div v-if="Object.keys(projects.data).length">
-         <form @submit.prevent="search">
-            <div class="max-h-[65vh] overflow-x-auto">
+         <form @submit.prevent="search(form.search_project_status)">
+            <div class="max-h-[59vh] overflow-x-auto">
                <table class="min-w-full divide-y divide-gray-200 border">
                   <thead class="sticky top-0">
                      <tr>

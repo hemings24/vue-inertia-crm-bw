@@ -19,24 +19,34 @@ class ProjectController extends Controller
    {
       Gate::authorize('viewAny',Project::class);
 
+      $project_statuses = StatusItem::where('status_items.type','project')
+      ->select('id','title','type','priority')->get();
+
+      $project_statuses = $project_statuses->prepend((object)[
+         'id'=>0, 'title'=>'All', 'type'=>'project', 'priority'=>0
+      ]);
+
       $perpage = $request->paginate ?: 10;
 
       $projects = Project::with(['status_item','customer'])
-         ->filter(request(['search_global','search_name','search_date','search_status','search_customer']))
+         ->filter(request(['search_project_status','search_global','search_name','search_date','search_status_items','search_customer']))
          ->select('projects.*')
          ->latest('projects.created_at')
          ->paginate($perpage)
          ->withQueryString();
       
       return Inertia::render('Projects/Index',[
-         'projects'         => $projects,
-         'paginate'         => $perpage,
-         'paginate_options' => Project::paginate_options(),
-         'searchGlobal'     => $request->search_global,
-         'searchName'       => $request->search_name,
-         'searchDate'       => $request->search_date,
-         'searchStatus'     => $request->search_status,
-         'searchCustomer'   => $request->search_customer
+         'projects'            => $projects,
+         'searchProjectStatus' => $request->search_project_status,
+         'project_statuses'    => $project_statuses,
+         'paginate'            => $perpage,
+         'paginate_options'    => Project::paginate_options(),
+         'searchGlobal'        => $request->search_global,
+         'searchName'          => $request->search_name,
+         'searchDate'          => $request->search_date,
+         'searchStatusItems'   => $request->search_status_items,
+         'searchCustomer'      => $request->search_customer,
+         'customers'           => Customer::get(['id','company'])
       ]);
    }
 

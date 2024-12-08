@@ -42,6 +42,10 @@ class Project extends Model
    
    public function scopeFilter($query, array $filters)
    {
+      if($filters['search_project_status'] ?? false){
+         $query->where('projects.project_status',request('search_project_status'));
+      }
+
       if($filters['search_global'] ?? false){
          $query->join('customers','customers.id','=','projects.customer')
          ->where(function($subquery){
@@ -60,8 +64,8 @@ class Project extends Model
          $query->where('projects.date','like','%'.request('search_date').'%');
       }
 
-      if($filters['search_status'] ?? false){
-         $query->where('status_items.title','like','%'.request('search_status').'%')
+      if($filters['search_status_items'] ?? false){
+         $query->where('status_items.title','like','%'.request('search_status_items').'%')
                 ->join('status_items','status_items.id','=','projects.project_status');
       }
 
