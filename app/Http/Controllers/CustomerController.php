@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCustomerRequest;
 use App\Models\Customer;
 use App\Models\County;
 use App\Models\StatusItem;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
@@ -38,10 +39,14 @@ class CustomerController extends Controller
       
       foreach($customers as $customer){
          $customer->notes = substr($customer->notes,0,70).'.....';
+         $customer->isHidden = true;
       }
+
+      $projects = Project::get(['id','name','date','customer']);
 
       return Inertia::render('Customers/Index',[
          'customers'            => $customers,
+         'projects'             => $projects,
          'searchCustomerStatus' => $request->search_customer_status,
          'customer_statuses'    => $customer_statuses,
          'paginate'             => $perpage,

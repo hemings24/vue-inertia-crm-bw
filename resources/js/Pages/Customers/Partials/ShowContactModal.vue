@@ -46,35 +46,79 @@ const closeModal=() =>{
 
       <div class="flex mx-8 my-4 space-x-10">
          <div class="basis-1 grow space-y-4">
-            <h2 class="text-xl font-medium text-slate-800">Person One</h2>
+            <h2 class="text-xl font-medium text-gray-700">Person One</h2>
             <div class="min-h-72 px-4 pt-4 space-y-3 bg-gray-100 rounded-md border-2 border-black-100">
-               <p><span class="mr-2 font-bold">Company:</span>{{customer.company}}</p>
-               <p><span class="mr-2 font-bold">Title:</span>{{customer.title_prefix}}</p>
-               <p><span class="mr-2 font-bold">First Name:</span>{{customer.first_name}}</p>
-               <p><span class="mr-2 font-bold">Last Name:</span>{{customer.last_name}}</p>
-               <p><span class="mr-2 font-bold">Phone:</span>{{customer.phone}}</p>
-               <p><span class="mr-2 font-bold">Email:</span>{{customer.email}}</p>
+               <p>
+                  <span class="mr-2 text-md font-semibold text-black-900">Company:</span>
+                  <span class="text-md text-gray-700">{{customer.company}}</span>
+               </p>
+               <p>
+                  <span class="mr-2 text-md font-semibold text-black-900">Title:</span>
+                  <span class="text-md text-gray-700">{{customer.title_prefix}}</span>
+               </p>
+               <p>
+                  <span class="mr-2 text-md font-semibold text-black-900">First Name:</span>
+                  <span class="text-md text-gray-700">{{customer.first_name}}</span>
+               </p>
+               <p>
+                  <span class="mr-2 text-md font-semibold text-black-900">Last Name:</span>
+                  <span class="text-md text-gray-700">{{customer.last_name}}</span>
+               </p>
+               <p>
+                  <span class="mr-2 text-md font-semibold text-black-900">Phone:</span>
+                  <span class="text-md text-gray-700">{{customer.phone}}</span>
+               </p>
+               <p>
+                  <span class="mr-2 text-md font-semibold text-black-900">Email:</span>
+                  <span class="text-md text-gray-700">{{customer.email}}</span>
+               </p>
             </div>
          </div>
          <div class="basis-1 grow space-y-4">
-            <h2 class="text-xl font-medium text-slate-800">Person Two</h2>
+            <h2 class="text-xl font-medium text-gray-700">Person Two</h2>
             <div class="min-h-72 px-4 pt-4 space-y-3 bg-gray-100 rounded-md border-2 border-black-100">
-               <p><span class="mr-2 font-bold">Title:</span></p>
-               <p><span class="mr-2 font-bold">First Name:</span></p>
-               <p><span class="mr-2 font-bold">Last Name:</span></p>
-               <p><span class="mr-2 font-bold">Phone:</span></p>
-               <p><span class="mr-2 font-bold">Email:</span></p>
+               <p>
+                  <span class="mr-2 text-md font-semibold text-black-900">Title:</span>
+               </p>
+               <p>
+                  <span class="mr-2 text-md font-semibold text-black-900">First Name:</span>
+               </p>
+               <p>
+                  <span class="mr-2 text-md font-semibold text-black-900">Last Name:</span>
+               </p>
+               <p>
+                  <span class="mr-2 text-md font-semibold text-black-900">Phone:</span>
+               </p>
+               <p>
+                  <span class="mr-2 text-md font-semibold text-black-900">Email:</span>
+               </p>
             </div>
          </div>
          <div class="basis-1 grow space-y-4">
-            <h2 class="text-xl font-medium text-slate-800">Addresses</h2>
+            <h2 class="text-xl font-medium text-gray-700">Addresses</h2>
             <div class="min-h-72 px-4 pt-4 space-y-3 bg-gray-100 rounded-md border-2 border-black-100">
-               <p><span class="mr-2 font-bold">Address:</span>{{customer.address1}}</p>
-               <p>{{customer.address2}}</p>
-               <p>{{customer.address3}}</p>
-               <p><span class="mr-2 font-bold">City:</span>{{customer.city}}</p>
-               <p><span class="mr-2 font-bold">Postcode:</span>{{customer.postcode}}</p>
-               <p><span class="mr-2 font-bold">County:</span>{{customer.county.title}}</p>
+               <p>
+                  <span class="mr-2 text-md font-semibold text-black-900">Address:</span>
+                  <span class="text-md text-gray-700">{{customer.address1}}</span>
+               </p>
+               <p>
+                  <span class="text-md text-gray-700">{{customer.address2}}</span>
+               </p>
+               <p>
+                  <span class="text-md text-gray-700">{{customer.address3}}</span>
+               </p>
+               <p>
+                  <span class="mr-2 text-md font-semibold text-black-900">City:</span>
+                  <span class="text-md text-gray-700">{{customer.city}}</span>
+               </p>
+               <p>
+                  <span class="mr-2 text-md font-semibold text-black-900">Postcode:</span>
+                  <span class="text-md text-gray-700">{{customer.postcode}}</span>
+               </p>
+               <p>
+                  <span class="mr-2 text-md font-semibold text-black-900">County:</span>
+                  <span class="text-md text-gray-700">{{customer.county.title}}</span>
+               </p>
             </div>
          </div>
       </div>

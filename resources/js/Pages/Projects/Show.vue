@@ -23,46 +23,46 @@ const props = defineProps({
       <div>
 
          <div class="mb-4">
-            <label for="name" class="text-lg font-medium text-black-900">
+            <label for="name" class="text-md font-semibold text-black-900">
                Name:
             </label>
-            <span class="text-lg text-gray-700"> 
+            <span class="text-md text-gray-700"> 
                {{project.name}}
             </span>
          </div>
 
          <div class="mb-4">
-            <label for="date" class="text-lg font-medium text-black-900">
+            <label for="date" class="text-md font-semibold text-black-900">
                Date:
             </label>
-            <span class="text-lg text-gray-700"> 
+            <span class="text-md text-gray-700"> 
                {{project.date}}
             </span>
          </div>
 
          <div class="mb-4">
-            <label for="price" class="text-lg font-medium text-black-900">
+            <label for="price" class="text-md font-semibold text-black-900">
                Price:
             </label>
-            <span class="text-lg text-gray-700"> 
+            <span class="text-md text-gray-700"> 
                &pound;{{project.price}}
             </span>
          </div>
 
          <div class="mb-4">
-            <label for="project_reference" class="text-lg font-medium text-black-900">
+            <label for="project_reference" class="text-md font-semibold text-black-900">
                Reference:
             </label>
-            <span class="text-lg text-gray-700"> 
+            <span class="text-md text-gray-700"> 
                {{project.project_reference}}
             </span>
          </div>
 
          <div class="mb-4">
-            <label for="project_status" class="text-lg font-medium text-black-900">
+            <label for="project_status" class="text-md font-semibold text-black-900">
                Status:
             </label>
-            <span v-for="status_item in status_items" :key="status_item.id" class="text-lg text-gray-700">
+            <span v-for="status_item in status_items" :key="status_item.id" class="text-md text-gray-700">
                <span v-if="status_item.id===project.project_status">
                   {{status_item.title}}
                </span>
@@ -70,10 +70,10 @@ const props = defineProps({
          </div>  
 
          <div class="mb-4">
-            <label for="customer" class="text-lg font-medium text-black-900">
+            <label for="customer" class="text-md font-semibold text-black-900">
                Customer:
             </label>
-            <span v-for="customer in customers" :key="customer.id" class="text-lg text-gray-700">
+            <span v-for="customer in customers" :key="customer.id" class="text-md text-gray-700">
                <span v-if="customer.id===project.customer">
                   {{customer.company}}
                </span>

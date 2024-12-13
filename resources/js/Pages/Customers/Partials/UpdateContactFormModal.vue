@@ -59,10 +59,10 @@ const closeModal=() =>{
       <form @submit.prevent="updateContact"> 
          <div class="flex mx-8 my-4 space-x-10">
             <div class="basis-1 grow space-y-4">
-               <h2 class="text-xl font-medium text-slate-800">Person One</h2>
+               <h2 class="text-xl font-medium text-gray-700">Person One</h2>
                <div class="min-h-96 px-4 pt-4 pb-10 space-y-3 bg-gray-100 rounded-md border-2 border-black-100">
                   <div>
-                     <label for="company" class="mr-2 font-bold text-gray-700">
+                     <label for="company" class="mr-2 text-md font-semibold text-black-900">
                         Company
                      </label>
                      <input v-model="form.company" type="text" id="company" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
@@ -71,7 +71,7 @@ const closeModal=() =>{
                      </p>
                   </div>                  
                   <div class="form-group">
-                     <label for="title_prefix" class="mr-2 font-bold text-gray-700">
+                     <label for="title_prefix" class="mr-2 text-md font-semibold text-black-900">
                         Title
                      </label>
                      <SelectInput
@@ -87,7 +87,7 @@ const closeModal=() =>{
                      <InputError :message="form.errors.title_prefix" class="mt-2 text-sm text-red-600"/>
                   </div>
                   <div>
-                     <label for="first_name" class="mr-2 font-bold text-gray-700">
+                     <label for="first_name" class="mr-2 text-md font-semibold text-black-900">
                         First Name
                      </label>
                      <input v-model="form.first_name" type="text" id="first_name" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
@@ -96,7 +96,7 @@ const closeModal=() =>{
                      </p>
                   </div>  
                   <div>
-                     <label for="last_name" class="mr-2 font-bold text-gray-700">
+                     <label for="last_name" class="mr-2 text-md font-semibold text-black-900">
                         Last Name
                      </label>
                      <input v-model="form.last_name" type="text" id="last_name" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
@@ -105,7 +105,7 @@ const closeModal=() =>{
                      </p>
                   </div>  
                   <div>
-                     <label for="phone" class="mr-2 font-bold text-gray-700">
+                     <label for="phone" class="mr-2 text-md font-semibold text-black-900">
                         Phone
                      </label>
                      <input v-model="form.phone" type="text" id="phone" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
@@ -114,7 +114,7 @@ const closeModal=() =>{
                      </p>
                   </div>
                   <div>
-                     <label for="email" class="mr-2 font-bold text-gray-700">
+                     <label for="email" class="mr-2 text-md font-semibold text-black-900">
                         Email
                      </label>
                      <input v-model="form.email" type="text" id="email" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
@@ -125,20 +125,30 @@ const closeModal=() =>{
                </div>
             </div>
             <div class="basis-1 grow space-y-4">
-               <h2 class="text-xl font-medium text-slate-800">Person Two</h2>
+               <h2 class="text-xl font-medium text-gray-700">Person Two</h2>
                <div class="min-h-96 px-4 pt-4 pb-80 space-y-3 bg-gray-100 rounded-md border-2 border-black-100">
-                  <p><span class="mr-2 font-bold">Title:</span></p>
-                  <p><span class="mr-2 font-bold">First Name:</span></p>
-                  <p><span class="mr-2 font-bold">Last Name:</span></p>
-                  <p><span class="mr-2 font-bold">Phone:</span></p>
-                  <p><span class="mr-2 font-bold">Email:</span></p>
+                  <p>
+                     <span class="mr-2 text-md font-semibold text-black-900">Title:</span>
+                  </p>
+                  <p>
+                     <span class="mr-2 text-md font-semibold text-black-900">First Name:</span>
+                  </p>
+                  <p>
+                     <span class="mr-2 text-md font-semibold text-black-900">Last Name:</span>
+                  </p>
+                  <p>
+                     <span class="mr-2 text-md font-semibold text-black-900">Phone:</span>
+                  </p>
+                  <p>
+                     <span class="mr-2 text-md font-semibold text-black-900">Email:</span>
+                  </p>                  
                </div>
             </div>
             <div class="basis-1 grow space-y-4">
-               <h2 class="text-xl font-medium text-slate-800">Addresses</h2>
+               <h2 class="text-xl font-medium text-gray-700">Addresses</h2>
                <div class="min-h-96 px-4 pt-4 pb-28 space-y-3 bg-gray-100 rounded-md border-2 border-black-100">
                   <div>
-                     <label for="address1" class="mr-2 font-bold text-gray-700">
+                     <label for="address1" class="mr-2 text-md font-semibold text-black-900">
                         Address
                      </label>
                      <input v-model="form.address1" type="text" id="address1" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
@@ -155,7 +165,7 @@ const closeModal=() =>{
                      </p>
                   </div>
                   <div>
-                     <label for="city" class="mr-2 font-bold text-gray-700">
+                     <label for="city" class="mr-2 text-md font-semibold text-black-900">
                         City
                      </label>
                      <input v-model="form.city" type="text" id="city" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
@@ -164,7 +174,7 @@ const closeModal=() =>{
                      </p>
                   </div>
                   <div>
-                     <label for="postcode" class="mr-2 font-bold text-gray-700">
+                     <label for="postcode" class="mr-2 text-md font-semibold text-black-900">
                         Postcode
                      </label>
                      <input v-model="form.postcode" type="text" id="postcode" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
@@ -173,7 +183,7 @@ const closeModal=() =>{
                      </p>
                   </div>
                   <div class="form-group">
-                     <label for="county" class="mr-2 font-bold text-gray-700">
+                     <label for="county" class="mr-2 text-md font-semibold text-black-900">
                         County
                      </label>
                      <SelectInput

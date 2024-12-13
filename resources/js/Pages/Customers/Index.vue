@@ -9,8 +9,11 @@ import SelectInput from '@/Components/SelectInput.vue'
 import Pagination from '@/Components/Pagination.vue'
 import ShowContactModal from './Partials/ShowContactModal.vue'
 
-const props = defineProps({ 
+const props = defineProps({
    customers:{
+      type: [Object,Array]
+   },
+   projects:{
       type: [Object,Array]
    },
    searchCustomerStatus: Number,
@@ -116,6 +119,7 @@ const destroy=(id) =>{
             <table class="min-w-full divide-y divide-gray-200 border">
                <thead class="sticky top-0">
                   <tr>
+                     <th class="px-6 py-3 bg-gray-50 text-left"></th>
                      <th class="px-6 py-3 bg-gray-50 text-left">
                         <form @submit.prevent="search(form.search_customer_status)">
                            <InputField
@@ -156,6 +160,7 @@ const destroy=(id) =>{
                      </th>
                   </tr>
                   <tr>
+                     <th class="px-6 py-3 bg-gray-50 text-left"></th>
                      <th class="px-6 py-3 bg-gray-50 text-left">
                         <span class="text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
                            Company
@@ -196,9 +201,15 @@ const destroy=(id) =>{
                      </th>
                   </tr>
                </thead>
-               <tbody class="bg-white divide-y divide-gray-200 divide-solid">
+               <tbody v-for="(customer,index) in customers.data" :key="index" class="bg-white divide-y divide-gray-200 divide-solid">
                   <!--tr v-for="customer in customers.data" :key="customer.id"-->
-                  <tr v-for="(customer,index) in customers.data" :key="index" class="transition duration-300 ease-in-out hover:bg-gray-100">
+                  <tr class="transition duration-300 ease-in-out hover:bg-gray-100">
+                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                        <button @click="customer.isHidden = !customer.isHidden">
+                           <span v-if="customer.isHidden">[+]</span>
+                           <span v-else>[x]</span>
+                        </button>
+                     </td>
                      <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                         {{customer.company}}
                      </td>
@@ -226,6 +237,80 @@ const destroy=(id) =>{
                         <button v-if="permissions.customers_admin" @click="destroy(customer.id)" type="button" class="rounded-md bg-red-600 px-2 py-2 text-xs font-semibold uppercase tracking-widest text-white shadow-sm">
                            Delete
                         </button>
+                     </td>
+                  </tr>
+                  <tr v-if="!customer.isHidden">
+                     <td colspan="6" class="px-6 py-4 whitespace-no-wrap leading-5">
+                        <div class="flex mx-0 my-4 space-x-10">
+                           <div class="basis-1 grow space-y-4">
+                              <div class="px-0 pt-0 space-y-4 bg-white-100 rounded-md border-0 border-black-100">
+                                 <div>
+                                    <p class="mb-8">
+                                       <span class="mr-2 text-md font-semibold text-black-900">Company:</span>
+                                       <span class="text-md text-gray-700">{{customer.company}}</span>
+                                    </p>
+                                    <p class="pb-2">
+                                       <span class="mr-2 text-md font-semibold text-black-900">Address:</span>
+                                       <span class="mr-1 text-md text-gray-700">{{customer.address1}},</span>
+                                       <span class="text-md text-gray-700">{{customer.address2}}</span>
+                                       <span class="text-md text-gray-700">{{customer.address3}}</span>
+                                       <span class="mr-1 text-md text-gray-700">{{customer.city}}</span>
+                                       <span class="mr-1 text-md text-gray-700">{{customer.postcode}},</span>
+                                       <span class="text-md text-gray-700">{{customer.county.title}}</span>
+                                    </p>
+                                    <p>
+                                       <span class="mr-2 text-md font-semibold text-black-900">Contact:</span>
+                                       <span class="mr-1 text-md text-gray-700">{{customer.title_prefix}}</span>
+                                       <span class="mr-1 text-md text-gray-700">{{customer.first_name}}</span>
+                                       <span class="text-md text-gray-700">{{customer.last_name}}</span>
+                                    </p>
+                                    <p>
+                                       <span class="text-md text-gray-700">{{customer.email}}</span>
+                                    </p>
+                                    <p>
+                                       <span class="text-md text-gray-700">{{customer.phone}}</span>
+                                    </p>
+                                 </div>
+                                 <div class="pb-4">
+                                    <ShowContactModal
+                                       :customer="customer"
+                                       :permissions="permissions"
+                                       :title_prefixes="title_prefixes"
+                                       :counties="counties"
+                                    />  
+                                 </div>
+                                 <div>
+                                    <p class="mb-1 text-xl font-medium text-gray-700">Projects</p>
+                                    <div v-if="Object.keys(projects).length">
+                                       <div v-for="(project,index) in projects" :key="index">
+                                          <span v-if="project.customer===customer.id">
+                                             <span class="mr-2 text-md font-semibold text-black-900">Name:</span>
+                                             <span class="mr-4 text-md text-gray-700">{{project.name}}</span>
+                                             <span class="mr-2 text-md font-semibold text-black-900">Date:</span>
+                                             <span class="text-md text-gray-700">{{project.date}}</span>
+                                          </span>
+                                       </div>
+                                    </div>
+                                    <div v-else>
+                                       <p>Customer has no projects</p>
+                                    </div>
+                                 </div>
+                                 <div>
+                                    <Link v-if="permissions.projects_admin" :href="route('projects.create')" class="inline-block rounded-md bg-blue-500 px-4 py-3 text-xs font-semibold uppercase tracking-widest text-white shadow-sm">
+                                       Add New Project
+                                    </Link>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="basis-1 grow space-y-4">
+                              <div class="px-0 pb-32 space-y-8 bg-white-100 rounded-md border-2 border-black-100">
+                                 <p class="mb-1 text-xl font-medium text-gray-700">Latest Diary</p>
+                              </div>
+                              <div class="px-0 pb-32 space-y-8 bg-white-100 rounded-md border-2 border-black-100">
+                                 <p class="mb-1 text-xl font-medium text-gray-700">Latest Comms</p>
+                              </div>
+                           </div>
+                        </div>
                      </td>
                   </tr>
                </tbody>
