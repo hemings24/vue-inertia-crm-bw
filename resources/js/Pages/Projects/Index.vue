@@ -88,9 +88,11 @@ const destroy=(id) =>{
                   @click="search(project_status.id)"
                   :disabled="form.processing"
                   :class="((project_status.id==form.search_project_status) || (project_status.id==0 && form.search_project_status==null)) && 'active-statusitem'"
-                  class="hover:!bg-gray-200 hover:text-gray-700 focus:!bg-blue-500 focus:text-white focus:!ring-0 focus:ring-blue-500 focus:ring-offset-0 rounded-none border-none"
+                  class="text-gray-500 hover:!bg-gray-200 hover:text-gray-700 focus:!bg-blue-500 focus:text-white focus:!ring-0 focus:ring-blue-500 focus:ring-offset-0 rounded-none border-none"
                >
-                  {{project_status.title}}
+                  <span class="text-sm font-medium capitalize">
+                     {{project_status.title}}
+                  </span>   
                </SecondaryButton>
             </span>
             <hr>

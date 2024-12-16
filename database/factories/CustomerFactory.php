@@ -15,7 +15,7 @@ class CustomerFactory extends Factory
    public function definition(): array
    {
       $counties = County::pluck('id');
-      $status_items = StatusItem::where('status_items.type','customer')->get('id');
+      $status_items = StatusItem::where('status_items.type','customers')->get('id');
 
       return[
          'company'         => $this->faker->company(),

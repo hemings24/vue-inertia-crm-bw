@@ -19,11 +19,11 @@ class ProjectController extends Controller
    {
       Gate::authorize('viewAny',Project::class);
 
-      $project_statuses = StatusItem::where('status_items.type','project')
+      $project_statuses = StatusItem::where('status_items.type',"projects")
       ->select('id','title','type','priority')->get();
 
       $project_statuses = $project_statuses->prepend((object)[
-         'id'=>0, 'title'=>'All', 'type'=>'project', 'priority'=>0
+         'id'=>0, 'title'=>"All", 'type'=>"projects", 'priority'=>0
       ]);
 
       $perpage = $request->paginate ?: 10;
@@ -57,7 +57,7 @@ class ProjectController extends Controller
 
       return Inertia::render('Projects/Show',[
          'project'      => $project,
-         'status_items' => StatusItem::where('status_items.type','project')->get(['id','title']),
+         'status_items' => StatusItem::where('status_items.type',"projects")->get(['id','title']),
          'customers'    => Customer::get(['id','company'])      
       ]);
    }
@@ -68,7 +68,7 @@ class ProjectController extends Controller
       Gate::authorize('create',Project::class);
       
       return Inertia::render('Projects/Create',[
-         'status_items' => StatusItem::where('status_items.type','project')->get(['id','title']),
+         'status_items' => StatusItem::where('status_items.type',"projects")->get(['id','title']),
          'customers'    => Customer::get(['id','company']),
          'action'       => "add"
       ]);
@@ -91,7 +91,7 @@ class ProjectController extends Controller
 
       return Inertia::render('Projects/Edit',[
          'project'      => $project,
-         'status_items' => StatusItem::where('status_items.type','project')->get(['id','title']),
+         'status_items' => StatusItem::where('status_items.type',"projects")->get(['id','title']),
          'customers'    => Customer::get(['id','company']),
          'action'       => "update"
       ]);

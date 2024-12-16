@@ -99,9 +99,11 @@ const destroy=(id) =>{
                   @click="search(customer_status.id)"
                   :disabled="form.processing"
                   :class="((customer_status.id==form.search_customer_status) || (customer_status.id==0 && form.search_customer_status==null)) && 'active-statusitem'"
-                  class="hover:!bg-gray-200 hover:text-gray-700 focus:!bg-blue-500 focus:text-white focus:!ring-0 focus:ring-blue-500 focus:ring-offset-0 rounded-none border-none"
+                  class="text-gray-500 hover:!bg-gray-200 hover:text-gray-700 focus:!bg-blue-500 focus:text-white focus:!ring-0 focus:ring-blue-500 focus:ring-offset-0 rounded-none border-none"
                >
-                  {{customer_status.title}}
+                  <span class="text-sm font-medium capitalize">
+                     {{customer_status.title}}
+                  </span>
                </SecondaryButton>
             </span>
             <hr>
@@ -244,62 +246,66 @@ const destroy=(id) =>{
                         <div class="flex mx-0 my-4 space-x-10">
                            <div class="basis-1 grow space-y-4">
                               <div class="px-0 pt-0 space-y-4 bg-white-100 rounded-md border-0 border-black-100">
-                                 <div>
-                                    <p class="mb-8">
-                                       <span class="mr-2 text-md font-semibold text-black-900">Company:</span>
-                                       <span class="text-md text-gray-700">{{customer.company}}</span>
-                                    </p>
-                                    <p class="pb-2">
-                                       <span class="mr-2 text-md font-semibold text-black-900">Address:</span>
-                                       <span class="mr-1 text-md text-gray-700">{{customer.address1}},</span>
-                                       <span class="text-md text-gray-700">{{customer.address2}}</span>
-                                       <span class="text-md text-gray-700">{{customer.address3}}</span>
-                                       <span class="mr-1 text-md text-gray-700">{{customer.city}}</span>
-                                       <span class="mr-1 text-md text-gray-700">{{customer.postcode}},</span>
-                                       <span class="text-md text-gray-700">{{customer.county.title}}</span>
-                                    </p>
-                                    <p>
-                                       <span class="mr-2 text-md font-semibold text-black-900">Contact:</span>
-                                       <span class="mr-1 text-md text-gray-700">{{customer.title_prefix}}</span>
-                                       <span class="mr-1 text-md text-gray-700">{{customer.first_name}}</span>
-                                       <span class="text-md text-gray-700">{{customer.last_name}}</span>
-                                    </p>
-                                    <p>
-                                       <span class="text-md text-gray-700">{{customer.email}}</span>
-                                    </p>
-                                    <p>
-                                       <span class="text-md text-gray-700">{{customer.phone}}</span>
-                                    </p>
+                                 <div class="pb-6">
+                                    <div class="pb-4">
+                                       <p class="mb-8">
+                                          <span class="mr-2 text-md font-semibold text-black-900">Company:</span>
+                                          <span class="text-md text-gray-700">{{customer.company}}</span>
+                                       </p>
+                                       <p class="pb-2">
+                                          <span class="mr-2 text-md font-semibold text-black-900">Address:</span>
+                                          <span class="mr-1 text-md text-gray-700">{{customer.address1}},</span>
+                                          <span class="text-md text-gray-700">{{customer.address2}}</span>
+                                          <span class="text-md text-gray-700">{{customer.address3}}</span>
+                                          <span class="mr-1 text-md text-gray-700">{{customer.city}}</span>
+                                          <span class="mr-1 text-md text-gray-700">{{customer.postcode}},</span>
+                                          <span class="text-md text-gray-700">{{customer.county.title}}</span>
+                                       </p>
+                                       <p>
+                                          <span class="mr-2 text-md font-semibold text-black-900">Contact:</span>
+                                          <span class="mr-1 text-md text-gray-700">{{customer.title_prefix}}</span>
+                                          <span class="mr-1 text-md text-gray-700">{{customer.first_name}}</span>
+                                          <span class="text-md text-gray-700">{{customer.last_name}}</span>
+                                       </p>
+                                       <p>
+                                          <span class="text-md text-gray-700">{{customer.email}}</span>
+                                       </p>
+                                       <p>
+                                          <span class="text-md text-gray-700">{{customer.phone}}</span>
+                                       </p>
+                                    </div>
+                                    <div>
+                                       <ShowContactModal
+                                          :customer="customer"
+                                          :permissions="permissions"
+                                          :title_prefixes="title_prefixes"
+                                          :counties="counties"
+                                       />  
+                                    </div>
                                  </div>
-                                 <div class="pb-4">
-                                    <ShowContactModal
-                                       :customer="customer"
-                                       :permissions="permissions"
-                                       :title_prefixes="title_prefixes"
-                                       :counties="counties"
-                                    />  
-                                 </div>
+
                                  <div>
                                     <p class="mb-1 text-xl font-medium text-gray-700">Projects</p>
-                                    <div v-if="Object.keys(projects).length">
-                                       <div v-for="(project,index) in projects" :key="index">
-                                          <span v-if="project.customer===customer.id">
-                                             <span class="mr-2 text-md font-semibold text-black-900">Name:</span>
-                                             <span class="mr-4 text-md text-gray-700">{{project.name}}</span>
-                                             <span class="mr-2 text-md font-semibold text-black-900">Date:</span>
-                                             <span class="text-md text-gray-700">{{project.date}}</span>
-                                          </span>
+                                    <div class="pb-4">
+                                       <div v-if="Object.keys(projects).length">
+                                          <div v-for="(project,index) in projects" :key="index">
+                                             <span v-if="project.customer===customer.id">
+                                                <span class="mr-2 text-md font-semibold text-black-900">Name:</span>
+                                                <span class="mr-4 text-md text-gray-700">{{project.name}}</span>
+                                                <span class="mr-2 text-md font-semibold text-black-900">Date:</span>
+                                                <span class="text-md text-gray-700">{{project.date}}</span>
+                                             </span>
+                                          </div>
+                                       </div>
+                                       <div v-else>
+                                          <p>Customer has no projects</p>
                                        </div>
                                     </div>
-                                    <div v-else>
-                                       <p>Customer has no projects</p>
-                                    </div>
-                                 </div>
-                                 <div>
                                     <Link v-if="permissions.projects_admin" :href="route('projects.create')" class="inline-block rounded-md bg-blue-500 px-4 py-3 text-xs font-semibold uppercase tracking-widest text-white shadow-sm">
                                        Add New Project
                                     </Link>
                                  </div>
+                                 
                               </div>
                            </div>
                            <div class="basis-1 grow space-y-4">

@@ -10,78 +10,135 @@ class StatusItemSeeder extends Seeder
    {
       StatusItem::factory()->create([
          'title' => 'To Chase',
-         'type'  => 'customer',
+         'type'  => 'customers',
          'priority' => 1
       ]);
       StatusItem::factory()->create([
          'title' => 'Lead Only',
-         'type'  => 'customer',
+         'type'  => 'customers',
          'priority' => 2
       ]);
       StatusItem::factory()->create([
          'title' => 'Current Customer',
-         'type'  => 'customer',
+         'type'  => 'customers',
          'priority' => 3
       ]);
       StatusItem::factory()->create([
-         'title' => 'In Progress',
-         'type'  => 'project',
+         'title' => 'Received',
+         'type'  => 'enquiries',
          'priority' => 1
       ]);
       StatusItem::factory()->create([
-         'title' => 'Pending',
-         'type'  => 'project',
+         'title' => 'Replied',
+         'type'  => 'enquiries',
          'priority' => 2
-      ]);
-      StatusItem::factory()->create([
-         'title' => 'Completed',
-         'type'  => 'project',
-         'priority' => 3
-      ]);
-      StatusItem::factory()->create([
-         'title' => 'Archived',
-         'type'  => 'project',
-         'priority' => 4
-      ]);
-      StatusItem::factory()->create([
-         'title' => 'Unpaid',
-         'type'  => 'invoice',
-         'priority' => 1
-      ]);
-      StatusItem::factory()->create([
-         'title' => 'Sent',
-         'type'  => 'invoice',
-         'priority' => 2
-      ]);
-      StatusItem::factory()->create([
-         'title' => 'Pending',
-         'type'  => 'invoice',
-         'priority' => 3
-      ]);
-      StatusItem::factory()->create([
-         'title' => 'Paid',
-         'type'  => 'invoice',
-         'priority' => 4
       ]);
       StatusItem::factory()->create([
          'title' => 'Refused',
-         'type'  => 'quote',
+         'type'  => 'quotes',
          'priority' => 1
       ]);
       StatusItem::factory()->create([
          'title' => 'Requested',
-         'type'  => 'quote',
+         'type'  => 'quotes',
          'priority' => 2
       ]);
       StatusItem::factory()->create([
          'title' => 'Sent',
-         'type'  => 'quote',
+         'type'  => 'quotes',
          'priority' => 3
       ]);
       StatusItem::factory()->create([
          'title' => 'Accepted',
-         'type'  => 'quote',
+         'type'  => 'quotes',
          'priority' => 4
       ]);
+      StatusItem::factory()->create([
+         'title' => 'In Progress',
+         'type'  => 'projects',
+         'priority' => 1
+      ]);
+      StatusItem::factory()->create([
+         'title' => 'Pending',
+         'type'  => 'projects',
+         'priority' => 2
+      ]);
+      StatusItem::factory()->create([
+         'title' => 'Complete',
+         'type'  => 'projects',
+         'priority' => 3
+      ]);
+      StatusItem::factory()->create([
+         'title' => 'Archived',
+         'type'  => 'projects',
+         'priority' => 4
+      ]);
+      StatusItem::factory()->create([
+         'title' => 'Customers',
+         'type'  => 'files',
+         'priority' => 1
+      ]);
+      StatusItem::factory()->create([
+         'title' => 'Enquiries',
+         'type'  => 'files',
+         'priority' => 2
+      ]);
+      StatusItem::factory()->create([
+         'title' => 'Quotes',
+         'type'  => 'files',
+         'priority' => 3
+      ]);
+      StatusItem::factory()->create([
+         'title' => 'Project',
+         'type'  => 'files',
+         'priority' => 4
+      ]);
+      StatusItem::factory()->create([
+         'title' => 'Admin',
+         'type'  => 'files',
+         'priority' => 5
+      ]);
+      StatusItem::factory()->create([
+         'title' => 'In Progress',
+         'type'  => 'admin',
+         'priority' => 1
+      ]);
+      StatusItem::factory()->create([
+         'title' => 'Pending',
+         'type'  => 'admin',
+         'priority' => 2
+      ]);
+      StatusItem::factory()->create([
+         'title' => 'Complete',
+         'type'  => 'admin',
+         'priority' => 3
+      ]);
+      StatusItem::factory()->create([
+         'title' => 'Archived',
+         'type'  => 'admin',
+         'priority' => 4
+      ]);
+/*
+      StatusItem::factory()->create([
+         'title' => 'Unpaid',
+         'type'  => 'invoices',
+         'priority' => 1
+      ]);
+      StatusItem::factory()->create([
+         'title' => 'Sent',
+         'type'  => 'invoices',
+         'priority' => 2
+      ]);
+      StatusItem::factory()->create([
+         'title' => 'Pending',
+         'type'  => 'invoices',
+         'priority' => 3
+      ]);
+      StatusItem::factory()->create([
+         'title' => 'Paid',
+         'type'  => 'invoices',
+         'priority' => 4
+      ]);
+*/
    }
 }

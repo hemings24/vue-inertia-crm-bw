@@ -6,7 +6,6 @@ import AddUpdateCustomerForm from './Partials/AddUpdateCustomerForm.vue'
 const props = defineProps({
    customer:{
       type: Object
-      //required: true
    },
    title_prefixes:{
       type: Array
