@@ -2,12 +2,12 @@
 import {watch} from 'vue'
 import {Head,Link,router,useForm} from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import ShowContactModal from './Partials/ShowContactModal.vue'
 import NavLink from '@/Components/NavLink.vue'
 import SecondaryButton from '@/Components/SecondaryButton.vue'
 import InputField from '@/Components/InputField.vue'
 import SelectInput from '@/Components/SelectInput.vue'
 import Pagination from '@/Components/Pagination.vue'
-import ShowContactModal from './Partials/ShowContactModal.vue'
 
 const props = defineProps({
    customers:{
@@ -23,7 +23,7 @@ const props = defineProps({
    permissions:{
       type: Object
    },
-   paginate: Number,
+   paginate_perpage: Number,
    paginate_options:{
       type: Array
    },
@@ -32,7 +32,6 @@ const props = defineProps({
    searchName: String,
    searchAddress: String,
    searchNotes: String,
-   searchStatusItems: String,
    title_prefixes:{
       type: Array
    },
@@ -43,43 +42,40 @@ const props = defineProps({
 
 const form = useForm({
    search_customer_status: props.searchCustomerStatus,
-   paginate: props.paginate,
+   paginate_perpage: props.paginate_perpage,
    search_global: props.searchGlobal,
    search_company: props.searchCompany,
    search_name: props.searchName,
    search_address: props.searchAddress,
-   search_notes: props.searchNotes,
-   search_status_items: props.searchStatusItems
+   search_notes: props.searchNotes
 });
 
 const search=(customer_status_id) =>{
    router.get(route('customers.index'),{
       search_customer_status: customer_status_id,
-      paginate: form.paginate,
+      paginate_perpage: form.paginate_perpage,
       search_global: form.search_global,
       search_company: form.search_company,
       search_name: form.search_name,
       search_address: form.search_address,
-      search_notes: form.search_notes,
-      search_status_items: form.search_status_items
+      search_notes: form.search_notes
    });
 };
 
-watch(()=>form.paginate,(newValue)=>{
+watch(()=>form.paginate_perpage,(newValue)=>{
    router.get(route('customers.index'),{
       search_customer_status: form.search_customer_status,
-      paginate: form.paginate,
+      paginate_perpage: form.paginate_perpage,
       search_global: form.search_global,
       search_company: form.search_company,
       search_name: form.search_name,
       search_address: form.search_address,
-      search_notes: form.search_notes,
-      search_status_items: form.search_status_items
+      search_notes: form.search_notes
    });
 });
 
 const destroy=(id) =>{
-   if(confirm('Are you sure?')){
+   if(confirm('WARNING ! \nClicking OK will delete this Customer and all associated Projects ! \n\nAre you sure ?')){
       router.delete(route('customers.destroy',id));
    }
 };
@@ -92,8 +88,8 @@ const destroy=(id) =>{
 
       <div class="flex flex-col space-y-4 mb-10">
          <h1 class="text-3xl text-gray-700">Customers</h1>
-         <div>
-            <span v-for="customer_status in customer_statuses" :key="customer_status.id">
+         <div class="flex flex-row">
+            <div v-for="customer_status in customer_statuses" :key="customer_status.id">
                <SecondaryButton v-if="permissions.customers_view" type="button"
                   id="search_customer_status"
                   @click="search(customer_status.id)"
@@ -105,7 +101,7 @@ const destroy=(id) =>{
                      {{customer_status.title}}
                   </span>
                </SecondaryButton>
-            </span>
+            </div>
             <hr>
          </div>
       </div>
@@ -188,8 +184,8 @@ const destroy=(id) =>{
                            <form @submit.prevent="search(form.search_customer_status)">
                               Show
                               <SelectInput
-                                 id="paginate"
-                                 v-model="form.paginate"
+                                 id="paginate_perpage"
+                                 v-model="form.paginate_perpage"
                                  :options="paginate_options"
                                  option-value="id"
                                  option-label="title"
@@ -221,7 +217,7 @@ const destroy=(id) =>{
                            :permissions="permissions"
                            :title_prefixes="title_prefixes"
                            :counties="counties"
-                        />  
+                        />
                      </td>
                      <td class="max-w-sm px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                         {{customer.notes}}

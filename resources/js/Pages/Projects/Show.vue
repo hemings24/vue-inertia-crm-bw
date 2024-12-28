@@ -26,7 +26,7 @@ const props = defineProps({
             <label for="name" class="text-md font-semibold text-black-900">
                Name:
             </label>
-            <span class="text-md text-gray-700"> 
+            <span class="text-md text-gray-700 capitalize"> 
                {{project.name}}
             </span>
          </div>

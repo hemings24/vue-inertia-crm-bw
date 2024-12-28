@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ProjectResource;
 use App\Http\Requests\StoreProjectRequest;
 use App\Models\Project;
 use App\Models\Customer;
@@ -26,25 +25,24 @@ class ProjectController extends Controller
          'id'=>0, 'title'=>"All", 'type'=>"projects", 'priority'=>0
       ]);
 
-      $perpage = $request->paginate ?: 10;
+      $results_perpage = $request->paginate_perpage ?: 10;
 
       $projects = Project::with(['status_item','customer'])
-         ->filter(request(['search_project_status','search_global','search_name','search_date','search_status_items','search_customer']))
+         ->filter(request(['search_project_status','search_global','search_name','search_date','search_customer']))
          ->select('projects.*')
          ->latest('projects.created_at')
-         ->paginate($perpage)
+         ->paginate($results_perpage)
          ->withQueryString();
       
       return Inertia::render('Projects/Index',[
          'projects'            => $projects,
          'searchProjectStatus' => $request->search_project_status,
          'project_statuses'    => $project_statuses,
-         'paginate'            => $perpage,
+         'paginate_perpage'    => $results_perpage,
          'paginate_options'    => Project::paginate_options(),
          'searchGlobal'        => $request->search_global,
          'searchName'          => $request->search_name,
          'searchDate'          => $request->search_date,
-         'searchStatusItems'   => $request->search_status_items,
          'searchCustomer'      => $request->search_customer,
          'customers'           => Customer::get(['id','company'])
       ]);
@@ -81,7 +79,7 @@ class ProjectController extends Controller
       Project::create($request->validated());
 
       return redirect()->route('projects.index')
-         ->with('message','Project created successfully.');
+         ->with('message','New Project successfully created');
    }
 
 
@@ -104,7 +102,7 @@ class ProjectController extends Controller
       $project->update($request->validated());
 
       return redirect()->route('projects.index')
-         ->with('message','Project updated successfully');
+         ->with('message','Project successfully updated');
    }
 
    
@@ -115,6 +113,6 @@ class ProjectController extends Controller
       $project->delete();
 
       return redirect()->route('projects.index')
-         ->with('message','Project deleted successfully');
+         ->with('message','Project successfully deleted');
    }
 }

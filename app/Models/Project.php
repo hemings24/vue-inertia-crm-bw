@@ -64,10 +64,10 @@ class Project extends Model
          $query->where('projects.date','like','%'.request('search_date').'%');
       }
 
-      if($filters['search_status_items'] ?? false){
+      /*if($filters['search_status_items'] ?? false){
          $query->where('status_items.title','like','%'.request('search_status_items').'%')
                 ->join('status_items','status_items.id','=','projects.project_status');
-      }
+      }*/
 
       if($filters['search_customer'] ?? false){
          $query->where('customers.company','like','%'.request('search_customer').'%')

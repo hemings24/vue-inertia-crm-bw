@@ -25,9 +25,9 @@ const navigate=(status_item_id,status_item_type) =>{
 
 <template>
    <div class="flex flex-col space-y-4 mb-10">
-      <h1 class="text-3xl text-gray-700">Customers</h1>
-      <div>
-         <span v-for="status_type in status_types" :key="status_type.id">
+      <h1 class="text-3xl text-gray-700">Customer</h1>
+      <div class="flex flex-row">
+         <div v-for="status_type in status_types" :key="status_type.id">
             <SecondaryButton v-if="permissions.customers_view" type="button"
                id="nav_status_type"
                @click="navigate(status_type.id,status_type.type)"
@@ -38,7 +38,7 @@ const navigate=(status_item_id,status_item_type) =>{
                   {{status_type.type}}
                </span>
             </SecondaryButton>
-         </span>
+         </div>
          <hr>
       </div>
    </div>

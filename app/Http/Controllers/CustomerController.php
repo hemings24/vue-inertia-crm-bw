@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CustomerResource;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Models\Customer;
 use App\Models\County;
@@ -27,13 +26,13 @@ class CustomerController extends Controller
          'id'=>0, 'title'=>"All", 'type'=>"customers", 'priority'=>0
       ]);
 
-      $perpage = $request->paginate ?: 10;
+      $results_perpage = $request->paginate_perpage ?: 10;
 
       $customers = Customer::with(['county','status_item'])
-         ->filter(request(['search_customer_status','search_global','search_company','search_name','search_address','search_notes','search_status_items']))
+         ->filter(request(['search_customer_status','search_global','search_company','search_name','search_address','search_notes']))
          ->select('customers.*')
          ->latest('customers.created_at')
-         ->paginate($perpage)
+         ->paginate($results_perpage)
          ->withQueryString();
       
       foreach($customers as $customer){
@@ -48,14 +47,13 @@ class CustomerController extends Controller
          'projects'             => $projects,
          'searchCustomerStatus' => $request->search_customer_status,
          'customer_statuses'    => $customer_statuses,
-         'paginate'             => $perpage,
+         'paginate_perpage'     => $results_perpage,
          'paginate_options'     => Customer::paginate_options(),
          'searchGlobal'         => $request->search_global,
          'searchCompany'        => $request->search_company,
          'searchName'           => $request->search_name,
          'searchAddress'        => $request->search_address,
          'searchNotes'          => $request->search_notes,
-         'searchStatusItems'    => $request->search_status_items,
          'title_prefixes'       => Customer::title_prefixes(),
          'counties'             => County::get(['id','title'])
       ]);
@@ -97,6 +95,7 @@ class CustomerController extends Controller
          'title_prefixes' => Customer::title_prefixes(),
          'counties'       => County::get(['id','title']),
          'status_items'   => StatusItem::where('status_items.type',"customers")->get(['id','title']),
+         'status_actions' => StatusItem::status_actions(),
          'action'         => "add"
       ]);
    }
@@ -108,7 +107,7 @@ class CustomerController extends Controller
       Customer::create($request->validated());
 
       return redirect()->route('customers.index')
-         ->with('message','Customer created successfully.');
+         ->with('message','New Customer successfully created');
    }
 
 
@@ -121,6 +120,7 @@ class CustomerController extends Controller
          'title_prefixes' => Customer::title_prefixes(),
          'counties'       => County::get(['id','title']),
          'status_items'   => StatusItem::where('status_items.type',"customers")->get(['id','title']),
+         'status_actions' => StatusItem::status_actions(),
          'action'         => "update"
       ]);
    }
@@ -132,7 +132,7 @@ class CustomerController extends Controller
       $customer->update($request->validated());
 
       return redirect()->route('customers.index')
-         ->with('message','Customer updated successfully');
+         ->with('message','Customer successfully updated');
    }
 
    
@@ -143,6 +143,6 @@ class CustomerController extends Controller
       $customer->delete();
 
       return redirect()->route('customers.index')
-         ->with('message','Customer deleted successfully');
+         ->with('message','Customer successfully deleted');
    }
 }

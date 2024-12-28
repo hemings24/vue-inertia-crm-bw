@@ -22,8 +22,8 @@ return new class extends Migration
          $table->string('address3')->nullable();
          $table->string('city')->nullable();
          $table->string('postcode')->nullable();
-         $table->foreignId('county')->constrained('counties')->default(0)->onDelete('cascade');
-         $table->string('email')->nullable();
+         $table->foreignId('county')->references('id')->on('counties')->default(0);
+         $table->string('email')->nullable()->unique();
          $table->string('phone',length:50)->nullable();
          $table->text('notes')->nullable();
          $table->foreignId('customer_status')->constrained('status_items')->default(0)->onDelete('cascade');

@@ -51,12 +51,15 @@ class User extends Authenticatable implements MustVerifyEmail
       return Attribute::make(
          get: function(){
             return[
-               'customers_view'  => in_array($this->account_type,["admin","editor","user"]),
-               'customers_edit'  => in_array($this->account_type,["admin","editor"]),
-               'customers_admin' => $this->account_type==="admin",
-               'projects_view'   => in_array($this->account_type,["admin","editor","user"]),
-               'projects_edit'   => in_array($this->account_type,["admin","editor"]),
-               'projects_admin'  => $this->account_type==="admin"
+               'customers_view'     => in_array($this->account_type,["admin","editor","user"]),
+               'customers_edit'     => in_array($this->account_type,["admin","editor"]),
+               'customers_admin'    => $this->account_type==="admin",
+               'projects_view'      => in_array($this->account_type,["admin","editor","user"]),
+               'projects_edit'      => in_array($this->account_type,["admin","editor"]),
+               'projects_admin'     => $this->account_type==="admin",
+               'status_items_view'  => in_array($this->account_type,["admin","editor","user"]),
+               'status_items_edit'  => in_array($this->account_type,["admin","editor"]),
+               'status_items_admin' => $this->account_type==="admin"
             ];
          }
       );

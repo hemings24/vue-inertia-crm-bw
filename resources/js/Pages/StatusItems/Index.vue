@@ -9,11 +9,11 @@ import SelectInput from '@/Components/SelectInput.vue'
 import Pagination from '@/Components/Pagination.vue'
 
 const props = defineProps({ 
-   projects:{
+   status_items:{
       type: [Object,Array]
    },
-   searchProjectStatus: Number,
-   project_statuses:{
+   searchType: String,
+   status_types:{
       type: Array
    },
    permissions:{
@@ -23,71 +23,60 @@ const props = defineProps({
    paginate_options:{
       type: Array
    },
-   searchGlobal: String,
-   searchName: String,
-   searchDate: String,
-   searchCustomer: String,
-   customers:{
-      type: Array
-   }
+   searchTitle: String,
+   searchPriority: Number
 });
 
 const form = useForm({
-   search_project_status: props.searchProjectStatus,
+   search_type: props.searchType,
    paginate_perpage: props.paginate_perpage,
-   search_global: props.searchGlobal,
-   search_name: props.searchName,
-   search_date: props.searchDate,
-   search_customer: props.searchCustomer
+   search_title: props.searchTitle,
+   search_priority: props.searchPriority
 });
 
-const search=(project_status_id) =>{
-   router.get(route('projects.index'),{
-      search_project_status: project_status_id,
+const search=(type_name) =>{
+   router.get(route('status_items.index'),{
+      search_type: type_name,
       paginate_perpage: form.paginate_perpage,
-      search_global: form.search_global,
-      search_name: form.search_name,
-      search_date: form.search_date,
-      search_customer: form.search_customer
+      search_title: form.search_title,
+      search_priority: form.search_priority
    });
 };
 
 watch(()=>form.paginate_perpage,(newValue)=>{
-   router.get(route('projects.index'),{
-      search_project_status: form.search_project_status,
+   router.get(route('status_items.index'),{
+      search_type: form.search_type,
       paginate_perpage: form.paginate_perpage,
-      search_global: form.search_global,
-      search_name: form.search_name,
-      search_date: form.search_date,
-      search_customer: form.search_customer
+      search_title: form.search_title,
+      search_priority: form.search_priority
    });
 });
 
 const destroy=(id) =>{
-   if(confirm('Are you sure ?')){
-      router.delete(route('projects.destroy',id));
+   if(confirm('WARNING ! \nClicking OK will delete this Status Item and all associated Customers, Projects, and/or other records ! \n\nAre you sure ?')){
+      router.delete(route('status_items.destroy',id));
    }
 };
 </script>
- 
+
 <template>
-   <Head title="Projects"/>
+   <Head title="Status Items"/>
 
    <AuthenticatedLayout>
 
       <div class="flex flex-col space-y-4 mb-10">
-         <h1 class="text-3xl text-gray-700">Projects</h1>
+         <h1 class="text-3xl text-gray-700">Status</h1>
          <div class="flex flex-row">
-            <div v-for="project_status in project_statuses" :key="project_status.id">
-               <SecondaryButton v-if="permissions.projects_view" type="button"
-                  id="search_project_status"
-                  @click="search(project_status.id)"
+            <div v-for="status_type in status_types" :key="status_type.type">
+               <SecondaryButton v-if="permissions.status_items_view" type="button"
+                  id="search_type"
+                  @click="search(status_type.type)"
                   :disabled="form.processing"
-                  :class="((project_status.id==form.search_project_status) || (project_status.id==0 && form.search_project_status==null)) && 'active-statusitem'"
+                  :class="((status_type.type==form.search_type) || (status_type.type=='all' && form.search_type==null)) && 'active-statusitem'"
                   class="text-gray-500 hover:!bg-gray-200 hover:text-gray-700 focus:!bg-blue-500 focus:text-white focus:!ring-0 focus:ring-blue-500 focus:ring-offset-0 rounded-none border-none"
                >
                   <span class="text-sm font-medium capitalize">
-                     {{project_status.title}}
+                     {{status_type.type}}
                   </span>   
                </SecondaryButton>
             </div>
@@ -96,54 +85,45 @@ const destroy=(id) =>{
       </div>
 
       <div class="mb-4">
-         <Link v-if="permissions.projects_admin" :href="route('projects.create')" class="inline-block rounded-md bg-blue-500 px-4 py-3 text-xs font-semibold uppercase tracking-widest text-white shadow-sm">
-            Add New Project
+         <Link v-if="permissions.status_items_admin" :href="route('status_items.create')" class="inline-block rounded-md bg-blue-500 px-4 py-3 text-xs font-semibold uppercase tracking-widest text-white shadow-sm">
+            Add New Status Item
          </Link>
       </div>
 
-      <div v-if="Object.keys(projects.data).length">
-         <form @submit.prevent="search(form.search_project_status)">
+      <div v-if="Object.keys(status_items.data).length">
+         <form @submit.prevent="search(form.search_type)">
             <div class="max-h-[59vh] overflow-x-auto">
                <table class="min-w-full divide-y divide-gray-200 border">
                   <thead class="sticky top-0">
                      <tr>
+                        <th class="px-6 py-3 bg-gray-50 text-left"></th>
                         <th class="px-6 py-3 bg-gray-50 text-left">
                            <InputField
-                              v-model="form.search_name"
+                              v-model="form.search_title"
                               type="search"
                               label=""
                               icon="magnifying-glass"
-                              placeholder="Name"
+                              placeholder="Title"
                            />
                         </th>
                         <th class="px-6 py-3 bg-gray-50 text-left">
                            <InputField
-                              v-model="form.search_date"
+                              v-model="form.search_priority"
                               type="search"
                               label=""
                               icon="magnifying-glass"
-                              placeholder="Date"
+                              placeholder="Priority"
                            />
                         </th>
                         <th class="px-6 py-3 bg-gray-50 text-left"></th>
                         <th class="px-6 py-3 bg-gray-50 text-left"></th>
-                        <th class="px-6 py-3 bg-gray-50 text-left"></th>
-                        <th class="px-6 py-3 bg-gray-50 text-left">
-                           <InputField
-                              v-model="form.search_customer"
-                              type="search"
-                              label=""
-                              icon="magnifying-glass"
-                              placeholder="Customer"
-                           />
-                        </th>
                         <th class="px-6 pt-3 bg-gray-50 text-left text-nowrap">
                            <button type="submit" :disabled="form.processing" class="inline-block rounded-md border border-gray-300 px-4 py-3 text-sm font-semibold uppercase tracking-widest disabled:opacity-25">
                               Search
                            </button>
                            <NavLink
-                              :href="route('projects.index')"
-                              :active="route().current('projects.index')"
+                              :href="route('status_items.index')"
+                              :active="route().current('status_items.index')"
                               class="ml-5 text-md"
                            >
                               Reset
@@ -151,34 +131,29 @@ const destroy=(id) =>{
                         </th>
                      </tr>
                      <tr>
-                        <th class="px-6 py-3 bg-gray-50 text-left">
+                        <th class="px-6 pr-24 py-3 bg-gray-50 text-left">
                            <span class="text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                              Name
+                              Type
                            </span>
                         </th>
                         <th class="px-6 py-3 bg-gray-50 text-left">
                            <span class="text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                              Date
+                              Title
                            </span>
                         </th>
                         <th class="px-6 py-3 bg-gray-50 text-left">
                            <span class="text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                              Price
+                              Priority
                            </span>
                         </th>
                         <th class="px-6 py-3 bg-gray-50 text-left">
                            <span class="text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                              Reference
+                              Table Ref
                            </span>
                         </th>
                         <th class="px-6 py-3 bg-gray-50 text-left">
                            <span class="text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                              Status
-                           </span>
-                        </th>
-                        <th class="px-6 py-3 bg-gray-50 text-left">
-                           <span class="text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                              Customer
+                              URL
                            </span>
                         </th>
                         <th class="px-6 py-3 bg-gray-50 text-left text-nowrap">
@@ -200,33 +175,30 @@ const destroy=(id) =>{
                      </tr>
                   </thead>
                   <tbody class="bg-white divide-y divide-gray-200 divide-solid">
-                     <tr v-for="(project,index) in projects.data" :key="index" class="transition duration-300 ease-in-out hover:bg-gray-100">
-                        <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                           {{project.name}}
+                     <tr v-for="(status_item,index) in status_items.data" :key="index" class="transition duration-300 ease-in-out hover:bg-gray-100">
+                        <td class="px-6 pr-24 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 capitalize">
+                           {{status_item.type}}
+                        </td>
+                        <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 capitalize">
+                           {{status_item.title}}
                         </td>
                         <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                           {{project.date}}
+                           {{status_item.priority}}
                         </td>
                         <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                           &pound;{{project.price}}
+                           {{status_item.table_ref}}
                         </td>
                         <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                           {{project.project_reference}}
-                        </td>
-                        <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                           {{project.status_item.title}}
-                        </td>
-                        <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                           <p>{{project.customer.company}}</p>
+                           {{status_item.url}}
                         </td>
                         <td class="px-6 py-4 text-sm leading-5 text-gray-900 text-nowrap">
-                           <Link v-if="permissions.projects_view" :href="route('projects.show',project.id)" class="mr-1 inline-block rounded-md bg-green-600 px-2 py-2 text-xs font-semibold uppercase tracking-widest text-white shadow-sm">
+                           <Link v-if="permissions.status_items_view" :href="route('status_items.show',status_item.id)" class="mr-1 inline-block rounded-md bg-green-600 px-2 py-2 text-xs font-semibold uppercase tracking-widest text-white shadow-sm">
                               <span class="px-2">View</span>
                            </Link>
-                           <Link v-if="permissions.projects_edit" :href="route('projects.edit',project.id)" class="mr-1 inline-block rounded-md bg-blue-500 px-2 py-2 text-xs font-semibold uppercase tracking-widest text-white shadow-sm">
+                           <Link v-if="permissions.status_items_edit" :href="route('status_items.edit',status_item.id)" class="mr-1 inline-block rounded-md bg-blue-500 px-2 py-2 text-xs font-semibold uppercase tracking-widest text-white shadow-sm">
                               <span class="px-2.5">Edit</span>
                            </Link>
-                           <button v-if="permissions.projects_admin" @click="destroy(project.id)" type="button" class="rounded-md bg-red-600 px-2 py-2 text-xs font-semibold uppercase tracking-widest text-white shadow-sm">
+                           <button v-if="permissions.status_items_admin" @click="destroy(status_item.id)" type="button" class="rounded-md bg-red-600 px-2 py-2 text-xs font-semibold uppercase tracking-widest text-white shadow-sm">
                               Delete
                            </button>
                         </td>
@@ -237,7 +209,7 @@ const destroy=(id) =>{
          </form>
 
          <div class="flex justify-center mt-4 -mb-12">
-            <Pagination :links="projects.links"/>
+            <Pagination :links="status_items.links"/>
          </div>
       </div>
       
@@ -245,8 +217,8 @@ const destroy=(id) =>{
          <p>There are no records</p>
          <div>
             <NavLink
-               :href="route('projects.index')"
-               :active="route().current('projects.index')">
+               :href="route('status_items.index')"
+               :active="route().current('status_items.index')">
                Reset Filters
             </NavLink>
          </div>

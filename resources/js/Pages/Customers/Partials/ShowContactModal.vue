@@ -44,7 +44,7 @@ const closeModal=() =>{
          </DangerButton>
       </div>
 
-      <div class="flex mx-8 my-4 space-x-10">
+      <div class="flex mx-8 my-4 pb-2 space-x-10">
          <div class="basis-1 grow space-y-4">
             <h2 class="text-xl font-medium text-gray-700">Person One</h2>
             <div class="min-h-72 px-4 pt-4 space-y-3 bg-gray-100 rounded-md border-2 border-black-100">
@@ -123,7 +123,7 @@ const closeModal=() =>{
          </div>
       </div>
 
-      <div class="ml-4 mb-4">
+      <div class="ml-4 mb-6">
          <UpdateContactFormModal
             :customer="customer"
             :permissions="permissions"

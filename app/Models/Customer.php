@@ -121,9 +121,9 @@ class Customer extends Model
          $query->where('customers.notes','like','%'.request('search_notes').'%');
       }
 
-      if($filters['search_status_items'] ?? false){
+      /*if($filters['search_status_items'] ?? false){
          $query->where('status_items.title','like','%'.request('search_status_items').'%')
                 ->join('status_items','status_items.id','=','customers.customer_status');
-      }
+      }*/
    }
 }

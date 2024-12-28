@@ -1,5 +1,6 @@
 <script setup>
 import {Link,useForm} from '@inertiajs/vue3'
+import ManageCustomerStatusFormModal from './ManageCustomerStatusFormModal.vue'
 import SelectInput from '@/Components/SelectInput.vue'
 import InputLabel from '@/Components/InputLabel.vue'
 import InputError from '@/Components/InputError.vue'
@@ -7,7 +8,6 @@ import InputError from '@/Components/InputError.vue'
 const props = defineProps({ 
    customer:{
       type: Object
-      //required: true
    },
    title_prefixes:{
       type: Array
@@ -16,6 +16,9 @@ const props = defineProps({
       type: Array
    },
    status_items:{
+      type: Array
+   },
+   status_actions:{
       type: Array
    },
    action:{
@@ -56,9 +59,9 @@ if(props.action==="update"){
 </script>
 
 <template>
-   <form @submit.prevent="submit"> 
-
-      <div>
+   <div>
+      
+      <form @submit.prevent="submit">
 
          <div class="mb-4">
             <label for="company" class="block text-sm font-medium text-gray-700">
@@ -199,32 +202,43 @@ if(props.action==="update"){
                {{form.errors.notes}}
             </p>
          </div>
+      
+      </form>
 
-         <div class="mb-4 form-group">
-            <InputLabel for="customer_status" value="Status"/>
-            <SelectInput
-               id="customer_status"
-               v-model="form.customer_status"
-               :options="status_items"
-               option-value="id"
-               option-label="title"
-               :default-option="{id:'',title:''}"
-               :disabled="form.processing"
-               class="mt-1 block rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+      <div class="mb-4 form-group">
+         <InputLabel for="customer_status" value="Status"/>
+         <div class="flex flex-row">
+            <form @submit.prevent="submit"> 
+               <SelectInput
+                  id="customer_status"
+                  v-model="form.customer_status"
+                  :options="status_items"
+                  option-value="id"
+                  option-label="title"
+                  :default-option="{id:'',title:''}"
+                  :disabled="form.processing"
+                  class="mt-1 block rounded-l-md rounded-r-none border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+               />
+               <InputError :message="form.errors.customer_status" class="mt-2 text-sm text-red-600"/>
+            </form>
+            <ManageCustomerStatusFormModal
+               :status_actions="status_actions"
             />
-            <InputError :message="form.errors.customer_status" class="mt-2 text-sm text-red-600"/>
          </div>
-
       </div>
+   </div>
 
-      <div class="py-4 space-x-2">
-         <button type="submit" :disabled="form.processing" class="inline-block rounded-md bg-blue-500 px-4 py-3 text-xs font-semibold uppercase tracking-widest text-white shadow-sm disabled:opacity-25">
-            Save Customer
-         </button>
-         <Link :href="route('customers.index')" class="inline-block rounded-md border border-gray-300 px-4 py-3 text-xs font-semibold uppercase tracking-widest shadow-sm">
-            Cancel
-         </Link>
-      </div>
+   <div class="py-4">
+      <form @submit.prevent="submit">
+         <div class="space-x-2">
+            <button type="submit" :disabled="form.processing" class="inline-block rounded-md bg-blue-500 px-4 py-3 text-xs font-semibold uppercase tracking-widest text-white shadow-sm disabled:opacity-25">
+               Save Customer
+            </button>
+            <Link :href="route('customers.index')" class="inline-block rounded-md border border-gray-300 px-4 py-3 text-xs font-semibold uppercase tracking-widest shadow-sm">
+               Cancel
+            </Link>
+         </div>
+      </form>
+   </div>
 
-   </form>
 </template>

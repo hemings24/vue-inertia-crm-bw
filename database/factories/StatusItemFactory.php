@@ -14,7 +14,7 @@ class StatusItemFactory extends Factory
    {
       return[
          'title'     => $this->faker->words(2,true),
-         'url'       => $this->faker->url(),
+         'url'       => $this->faker->word(),
          'type'      => $this->faker->word(),
          'table_ref' => $this->faker->word(),
          'priority'  => $this->faker->randomDigit()

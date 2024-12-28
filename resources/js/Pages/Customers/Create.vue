@@ -13,6 +13,9 @@ defineProps({
    status_items:{
       type: Array
    },
+   status_actions:{
+      type: Array
+   },
    action:{
       type: String
    }
@@ -27,6 +30,7 @@ defineProps({
          :title_prefixes="title_prefixes"
          :counties="counties"
          :status_items="status_items"
+         :status_actions="status_actions"
          :action="action"
       />
    </AuthenticatedLayout>
