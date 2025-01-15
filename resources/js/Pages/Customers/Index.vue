@@ -3,6 +3,7 @@ import {watch} from 'vue'
 import {Head,Link,router,useForm} from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import ShowContactModal from './Partials/ShowContactModal.vue'
+import ShowLatestCommsModal from './Partials/ShowLatestCommsModal.vue'
 import NavLink from '@/Components/NavLink.vue'
 import SecondaryButton from '@/Components/SecondaryButton.vue'
 import InputField from '@/Components/InputField.vue'
@@ -36,6 +37,9 @@ const props = defineProps({
       type: Array
    },
    counties:{
+      type: Array
+   },
+   email_templates:{
       type: Array
    }
 });
@@ -142,6 +146,7 @@ const destroy=(id) =>{
                         </form>
                      </th>
                      <th class="px-6 py-3 bg-gray-50 text-left"></th>
+                     <th class="px-6 py-3 bg-gray-50 text-left"></th>
                      <th class="px-6 pt-3 bg-gray-50 text-left text-nowrap">
                         <form @submit.prevent="search(form.search_customer_status)">
                            <button type="submit" :disabled="form.processing" class="inline-block rounded-md border border-gray-300 px-4 py-3 text-sm font-semibold uppercase tracking-widest disabled:opacity-25">
@@ -172,6 +177,11 @@ const destroy=(id) =>{
                      <th class="max-w-sm px-6 py-3 bg-gray-50 text-left">
                         <span class="text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
                            Notes
+                        </span>
+                     </th>
+                     <th class="px-6 py-3 bg-gray-50 text-left">
+                        <span class="text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                           Latest Comms
                         </span>
                      </th>
                      <th class="px-6 py-3 bg-gray-50 text-left">
@@ -221,6 +231,13 @@ const destroy=(id) =>{
                      </td>
                      <td class="max-w-sm px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                         {{customer.notes}}
+                     </td>
+                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                        <ShowLatestCommsModal
+                           :customer="customer"
+                           :permissions="permissions"
+                           :email_templates="email_templates"
+                        />
                      </td>
                      <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                         {{customer.status_item.title}}

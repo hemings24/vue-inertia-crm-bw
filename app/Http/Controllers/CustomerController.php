@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\County;
 use App\Models\StatusItem;
 use App\Models\Project;
+use App\Models\Email;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
@@ -55,7 +56,8 @@ class CustomerController extends Controller
          'searchAddress'        => $request->search_address,
          'searchNotes'          => $request->search_notes,
          'title_prefixes'       => Customer::title_prefixes(),
-         'counties'             => County::get(['id','title'])
+         'counties'             => County::get(['id','title']),
+         'email_templates'      => Email::email_templates()
       ]);
    }
 

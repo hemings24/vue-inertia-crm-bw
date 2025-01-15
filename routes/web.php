@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\StatusItemController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -21,6 +22,7 @@ Route::middleware(['auth','verified'])->group(function(){
    Route::inertia('/dashboard','Dashboard')->name('dashboard');
    Route::resource('/customers',CustomerController::class);
    Route::resource('/projects',ProjectController::class);
+   Route::resource('/emails',EmailController::class);
    Route::resource('/status_items',StatusItemController::class);
    Route::inertia('/about','About')->name('about');
    Route::get('/profile',[ProfileController::class,'edit'])->name('profile.edit');

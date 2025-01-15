@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
          UserSeeder::class,
          CountySeeder::class,
          StatusItemSeeder::class,
-         CustomerAndProjectSeeder::class
+         Customer_Project_Email_Seeder::class
       ]);
    }
 }

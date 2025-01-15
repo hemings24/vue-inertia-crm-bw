@@ -33,8 +33,8 @@ class StatusItem extends Model
    {
       return[
          ['id' => "add",  'title' => "Add New"],
-         ['id' => "view",  'title' => "View All"],
-         ['id' => "edit",  'title' => "Edit Item"]
+         ['id' => "view", 'title' => "View All"],
+         ['id' => "edit", 'title' => "Edit Item"]
       ];
    }
 

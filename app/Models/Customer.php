@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\County;
 use App\Models\StatusItem;
 use App\Models\Project;
+use App\Models\Email;
 
 class Customer extends Model
 {
@@ -43,6 +44,11 @@ class Customer extends Model
    public function projects(): HasMany
    {
       return $this->hasMany(Project::class,'customer');
+   }
+
+   public function emails(): HasMany
+   {
+      return $this->hasMany(Email::class,'customer');
    }
 
    public static function title_prefixes()

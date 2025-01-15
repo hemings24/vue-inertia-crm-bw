@@ -57,6 +57,9 @@ class User extends Authenticatable implements MustVerifyEmail
                'projects_view'      => in_array($this->account_type,["admin","editor","user"]),
                'projects_edit'      => in_array($this->account_type,["admin","editor"]),
                'projects_admin'     => $this->account_type==="admin",
+               'emails_view'        => in_array($this->account_type,["admin","editor","user"]),
+               'emails_edit'        => in_array($this->account_type,["admin","editor"]),
+               'emails_admin'       => $this->account_type==="admin",
                'status_items_view'  => in_array($this->account_type,["admin","editor","user"]),
                'status_items_edit'  => in_array($this->account_type,["admin","editor"]),
                'status_items_admin' => $this->account_type==="admin"
