@@ -15,7 +15,7 @@ const props = defineProps({
 const form = useForm({
    title: '',
    url: '---',
-   type: 'customers',
+   type: 'customer',
    table_ref: '---',
    priority: 0,
    page: 'modal'

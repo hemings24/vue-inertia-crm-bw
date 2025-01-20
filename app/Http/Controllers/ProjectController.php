@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProjectRequest;
 use App\Models\Project;
 use App\Models\Customer;
+use App\Models\County;
 use App\Models\StatusItem;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -18,11 +19,11 @@ class ProjectController extends Controller
    {
       Gate::authorize('viewAny',Project::class);
 
-      $project_statuses = StatusItem::where('status_items.type',"projects")
+      $project_statuses = StatusItem::where('status_items.type',"project")
       ->select('id','title','type','priority')->get();
 
       $project_statuses = $project_statuses->prepend((object)[
-         'id'=>0, 'title'=>"All", 'type'=>"projects", 'priority'=>0
+         'id'=>0, 'title'=>"All", 'type'=>"project", 'priority'=>0
       ]);
 
       $results_perpage = $request->paginate_perpage ?: 10;
@@ -49,14 +50,42 @@ class ProjectController extends Controller
    }
 
 
-   public function show(Project $project)
+   public function show(Project $project, Request $request): Response
    {
       Gate::authorize('view',Project::class);
 
-      return Inertia::render('Projects/Show',[
-         'project'      => $project,
-         'status_items' => StatusItem::where('status_items.type',"projects")->get(['id','title']),
-         'customers'    => Customer::get(['id','company'])      
+      $status_types_nav = StatusItem::nav_status_types("project",$request);
+      list($status_type_filename,$nav_status_types,$nav_current_status_type_id,$webroute_name) = $status_types_nav;
+
+      $status_items = StatusItem::where('status_items.type',"project")->get(['id','title']);
+      foreach($status_items as $status_item){
+         if($status_item->id===$project->project_status){
+            $project->project_status_title = $status_item->title;        
+         }
+      }
+
+      $customers = Customer::with(['county','status_item'])->get();
+      foreach($customers as $cust){
+         if($cust->id===$project->customer){
+            $customer = $cust;
+         }
+      }
+      $counties = County::get(['id','title']);
+      foreach($counties as $county){
+         if($county->id===$customer->county){
+            $customer->county_title = $county->title;
+         }
+      }
+      $customer->customer_status_title = $customer->status_item->title;
+
+      return Inertia::render('StatusItems/Types/Show'.$status_type_filename,[
+         'status_type'            => $project,
+         'project'                => $project,
+         'customer'               => $customer,
+         'navStatusTypes'         => $nav_status_types,
+         'navCurrentStatusTypeId' => $nav_current_status_type_id,
+         'statusTypeHeading'      => ucwords($project->name),
+         'webrouteName'           => $webroute_name
       ]);
    }
 
@@ -66,7 +95,7 @@ class ProjectController extends Controller
       Gate::authorize('create',Project::class);
       
       return Inertia::render('Projects/Create',[
-         'status_items' => StatusItem::where('status_items.type',"projects")->get(['id','title']),
+         'status_items' => StatusItem::where('status_items.type',"project")->get(['id','title']),
          'customers'    => Customer::get(['id','company']),
          'action'       => "add"
       ]);
@@ -89,7 +118,7 @@ class ProjectController extends Controller
 
       return Inertia::render('Projects/Edit',[
          'project'      => $project,
-         'status_items' => StatusItem::where('status_items.type',"projects")->get(['id','title']),
+         'status_items' => StatusItem::where('status_items.type',"project")->get(['id','title']),
          'customers'    => Customer::get(['id','company']),
          'action'       => "update"
       ]);

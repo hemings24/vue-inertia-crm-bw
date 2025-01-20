@@ -1,25 +1,24 @@
 <script setup>
 import {Head} from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import StatusTypesNavLayout from './Layouts/StatusTypesNavLayout.vue'
+import StatusTypesNavLayout from '../Layouts/StatusTypesNavLayout.vue'
 
 const props = defineProps({
+   status_type:{
+      type: Object
+   },
    customer:{
       type: Object
    },
-   counties:{
-      type: Array
-   },
-   status_items:{
-      type: Array
-   },
-   navStatusItem: Number,
-   status_types:{
-      type: Array
-   },
    permissions:{
       type: Object
-   }
+   },
+   navStatusTypes:{
+      type: Array
+   },
+   navCurrentStatusTypeId: Number,
+   statusTypeHeading: String,
+   webrouteName: String
 });
 </script>
 
@@ -28,10 +27,12 @@ const props = defineProps({
    <AuthenticatedLayout>
 
       <StatusTypesNavLayout
-         :customer="customer"
-         :navStatusItem="navStatusItem"
-         :status_types="status_types"
+         :status_type="status_type"
          :permissions="permissions"
+         :navStatusTypes="navStatusTypes"
+         :navCurrentStatusTypeId="navCurrentStatusTypeId"
+         :statusTypeHeading="statusTypeHeading"
+         :webrouteName="webrouteName"
       >
          <div>
             <div class="mb-4">
@@ -64,11 +65,7 @@ const props = defineProps({
                   <p>{{customer.address3}}</p>
                   <p>{{customer.city}}</p>
                   <p>{{customer.postcode}}</p>
-                  <p v-for="county in counties" :key="county.id">
-                     <span v-if="county.id===customer.county">
-                        {{county.title}}
-                     </span>
-                  </p>
+                  <p>{{customer.county_title}}</p>
                </div>
             </div>
 
@@ -103,10 +100,8 @@ const props = defineProps({
                <label for="customer_status" class="text-md font-semibold text-black-900">
                   Status:
                </label>
-               <span v-for="status_item in status_items" :key="status_item.id" class="text-md text-gray-700">
-                  <span v-if="status_item.id===customer.customer_status">
-                     {{status_item.title}}
-                  </span>
+               <span class="text-md text-gray-700">
+                  {{customer.customer_status_title}}
                </span>
             </div>     
          </div>

@@ -1,22 +1,24 @@
 <script setup>
 import {Head,Link} from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import StatusTypesNavLayout from './Layouts/StatusTypesNavLayout.vue'
+import StatusTypesNavLayout from '../Layouts/StatusTypesNavLayout.vue'
 
 const props = defineProps({
-   customer:{
+   status_type:{
       type: Object
    },
    projects:{
-      type: [Object,Array]
-   },
-   navStatusItem: Number,
-   status_types:{
-      type: Array
+      type: Object
    },
    permissions:{
       type: Object
-   }
+   },
+   navStatusTypes:{
+      type: Array
+   },
+   navCurrentStatusTypeId: Number,
+   statusTypeHeading: String,
+   webrouteName: String
 });
 </script>
 
@@ -25,13 +27,15 @@ const props = defineProps({
    <AuthenticatedLayout>
 
       <StatusTypesNavLayout
-         :customer="customer"
-         :navStatusItem="navStatusItem"
-         :status_types="status_types"
+         :status_type="status_type"
          :permissions="permissions"
+         :navStatusTypes="navStatusTypes"
+         :navCurrentStatusTypeId="navCurrentStatusTypeId"
+         :statusTypeHeading="statusTypeHeading"
+         :webrouteName="webrouteName"
       >
          <div>
-            <div class="pb-4">
+            <div class="mb-4">
                <div v-if="Object.keys(projects).length">
                   <div v-for="(project,index) in projects" :key="index">
                      <span class="mr-2 text-md font-semibold text-black-900">Name:</span>

@@ -20,11 +20,11 @@ class CustomerController extends Controller
    {
       Gate::authorize('viewAny',Customer::class);
 
-      $customer_statuses = StatusItem::where('status_items.type',"customers")
+      $customer_statuses = StatusItem::where('status_items.type',"customer")
       ->select('id','title','type','priority')->get();
       
       $customer_statuses = $customer_statuses->prepend((object)[
-         'id'=>0, 'title'=>"All", 'type'=>"customers", 'priority'=>0
+         'id'=>0, 'title'=>"All", 'type'=>"customer", 'priority'=>0
       ]);
 
       $results_perpage = $request->paginate_perpage ?: 10;
@@ -65,26 +65,31 @@ class CustomerController extends Controller
    public function show(Customer $customer, Request $request): Response
    {
       Gate::authorize('view',Customer::class);
-
-      $status_types = StatusItem::where('status_items.type','!=',"customers")
-      ->select('id','type')->get()->unique('type');
       
-      $status_types = $status_types->prepend((object)[
-         'id'=>1, 'type'=>"details"
-      ]);
+      $status_types_nav = StatusItem::nav_status_types("customer",$request);
+      list($status_type_filename,$nav_status_types,$nav_current_status_type_id,$webroute_name) = $status_types_nav;
 
-      $nav_status_item = $request->nav_status_item ?: 1;
+      $counties = County::get(['id','title']);
+      foreach($counties as $county){
+         if($county->id===$customer->county){
+            $customer->county_title = $county->title;
+         }
+      }
+      $status_items = StatusItem::where('status_items.type',"customer")->get(['id','title']);
+      foreach($status_items as $status_item){
+         if($status_item->id===$customer->customer_status){
+            $customer->customer_status_title = $status_item->title;        
+         }
+      }
 
-      $status_type_name = $request->nav_status_type ?: "Details";
-      $status_type_name = ucfirst($status_type_name);
-
-      return Inertia::render('Customers/Show'.$status_type_name,[
-         'customer'      => $customer,
-         'projects'      => Project::where('projects.customer','=',$customer->id)->get(),
-         'counties'      => County::get(['id','title']),
-         'status_items'  => StatusItem::where('status_items.type',"customers")->get(['id','title']),
-         'navStatusItem' => $nav_status_item,
-         'status_types'  => $status_types
+      return Inertia::render('StatusItems/Types/Show'.$status_type_filename,[
+         'status_type'            => $customer,
+         'customer'               => $customer,
+         'projects'               => Project::where('projects.customer','=',$customer->id)->get(),
+         'navStatusTypes'         => $nav_status_types,
+         'navCurrentStatusTypeId' => $nav_current_status_type_id,
+         'statusTypeHeading'      => $customer->company,
+         'webrouteName'           => $webroute_name
       ]);
    }
 
@@ -96,7 +101,7 @@ class CustomerController extends Controller
       return Inertia::render('Customers/Create',[
          'title_prefixes' => Customer::title_prefixes(),
          'counties'       => County::get(['id','title']),
-         'status_items'   => StatusItem::where('status_items.type',"customers")->get(['id','title']),
+         'status_items'   => StatusItem::where('status_items.type',"customer")->get(['id','title']),
          'status_actions' => StatusItem::status_actions(),
          'action'         => "add"
       ]);
@@ -121,7 +126,7 @@ class CustomerController extends Controller
          'customer'       => $customer,
          'title_prefixes' => Customer::title_prefixes(),
          'counties'       => County::get(['id','title']),
-         'status_items'   => StatusItem::where('status_items.type',"customers")->get(['id','title']),
+         'status_items'   => StatusItem::where('status_items.type',"customer")->get(['id','title']),
          'status_actions' => StatusItem::status_actions(),
          'action'         => "update"
       ]);

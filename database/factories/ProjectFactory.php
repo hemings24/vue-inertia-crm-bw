@@ -13,7 +13,7 @@ class ProjectFactory extends Factory
    */
    public function definition(): array
    {
-      $status_items = StatusItem::where('status_items.type','projects')->get('id');
+      $status_items = StatusItem::where('status_items.type','project')->get('id');
 
       return[
          'name'              => $this->faker->words(3,true),
